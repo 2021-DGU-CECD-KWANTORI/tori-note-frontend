@@ -84,15 +84,20 @@ export default {
   },
   methods: {
     RequestItem () {
+      JQuery.ajaxSettings.traditional = true
       $.ajax({
         type: 'GET',
         url: 'http://localhost:3000/storage/note',
         data: {
-          'lecture_name': this.lecture_name,
-          'date': this.date
+          'lecture_name': encodeURI(String(this.lecture_name)),
+          'date': encodeURI(String(this.date))
         },
         dataType: 'json',
+        contentType: 'application/json; charset=euc-kr',
         success: function (data) {
+          console.log(this.lecture_name)
+          console.log(this.date)
+          console.log(data)
           for (var i = 0; i < data.length; i++) {
             this.items.push({
               imgURL: data[i].imgURL,

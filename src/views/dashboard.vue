@@ -60,8 +60,7 @@ export default {
   name: 'dashboard',
   data () {
     return {
-      timeline: [
-      ],
+      timeline: [],
       StopPer10: false, // true면 녹화 중지
       Record: false, // true면 녹화 시작
       Time_Line: true, // 이건 걍 타임라인 토글 역할
@@ -110,10 +109,17 @@ export default {
       $.ajax({
         type: 'GET',
         url: 'http://localhost:3000/timeline/images',
+        data: {
+          'id': String(this.fileID)
+        },
         dataType: 'json',
+        async: false,
         success: function (data) {
           // this.timeline.push({imgURL: 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAABWoAAAM...', id: 'temp'})
-          this.timeline.push({imgURL: data[0].imgURL, id: data[0].id})
+          console.log(data)
+          for (var i = 0; i < data.length; i++) {
+            this.timeline.push({imgURL: data[i].imgURL + ',' + data[i].image, id: data[i].id})
+          }
         }.bind(this)
       }).catch(error => {
         console.log(error.message)

@@ -54,6 +54,7 @@ export default {
         url: 'http://localhost:3000/storage',
         dataType: 'json',
         success: function (data) {
+          console.log(data)
           for (var i = 0; i < data.length; i++) {
             this.items.push({lecture_name: data[i].lecture_name, date: data[i].date})
           }
