@@ -107,30 +107,10 @@ export default {
     // this.timeline.push({imgURL: 'https://img.insight.co.kr/static/2016/02/15/700/yy1275us791rlld79jxb.jpg', id: 'temp'})
     // },
     RequestImg () {
-<<<<<<< HEAD
-      $.ajax({
-        type: 'GET',
-        url: 'http://localhost:3000/timeline/images',
-        data: {
-          'id': String(this.fileID)
-        },
-        dataType: 'json',
-        async: false,
-        success: function (data) {
-          // this.timeline.push({imgURL: 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAABWoAAAM...', id: 'temp'})
-          console.log(data)
-          for (var i = 0; i < data.length; i++) {
-            this.timeline.push({imgURL: data[i].imgURL + ',' + data[i].image, id: data[i].id})
-          }
-        }.bind(this)
-      }).catch(error => {
-        console.log(error.message)
-=======
       axios.get('http://localhost:3000/timeline/images', {
         params: {
           id: this.fileID
         }
->>>>>>> 08f15ca33b5e956c0725a76bde40b95fd41d6339
       })
         .then(function (data) {
           console.log(data)
