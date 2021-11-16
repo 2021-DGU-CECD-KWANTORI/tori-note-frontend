@@ -45,7 +45,7 @@
                       <input type="password" class="form-control" placeholder="Confirm Password"> </div>
                   </div>
                   <div class="form-group">
-                    <button class="btn btn-primary submit-btn">SIGN IN</button>
+                    <button @click="upbtn" class="btn btn-primary submit-btn">SIGN UP</button>
                   </div>
                   <div class="wrapper mt-5 text-gray">
                     <p class="footer-text">Copyright © 2021 Team KWANTORI. All rights reserved.</p>
@@ -73,7 +73,13 @@
 
 <script lang="js">
 export default {
-  name: 'register'
+  name: 'register',
+  methods: {
+    upbtn () {
+      location.href = '#/pages/login'
+    }
+  }
+
 }
 </script>
 

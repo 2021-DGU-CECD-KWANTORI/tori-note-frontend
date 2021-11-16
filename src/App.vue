@@ -12,6 +12,7 @@
 @import "../node_modules/flag-icon-css/css/flag-icon.min.css";
 @import "../node_modules/vue-snotify/styles/material.css";
 @import "../node_modules/typicons.font/src/font/typicons.css";
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
 </style>
 
 <style lang="scss">

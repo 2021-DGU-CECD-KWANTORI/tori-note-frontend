@@ -1,5 +1,5 @@
 <template lang="html">
-  <b-navbar id="template-header" class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" toggleable="md">
+  <b-navbar id="template-header" class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="box-shadow:none;" toggleable="md">
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
       <router-link class="navbar-brand brand-logo" to="/">
         <img src="../../assets/images/tori-logo.png" alt="logo" />

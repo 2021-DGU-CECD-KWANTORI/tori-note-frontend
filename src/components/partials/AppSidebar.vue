@@ -2,14 +2,14 @@
   <section class="app-sidebar">
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
       <ul class="nav">
-        <li class="nav-item nav-profile">
+        <li class="nav-item nav-profile" style="margin-top:70px;">
           <a href="#" class="nav-link">
             <div class="profile-image">
               <img class="img-xs rounded-circle" src="https://avatars.githubusercontent.com/u/5829095?v=4" alt="profile image">
               <div class="dot-indicator bg-success"></div>
             </div>
             <div class="text-wrapper">
-              <p class="profile-name">Kim-kwan-woo</p>
+              <p class="profile-name">kim-kwan-woo</p>
             </div>
           </a>
         </li>
@@ -97,5 +97,6 @@ export default {
 
 <style scoped lang="scss">
 .app-sidebar {
+  z-index:1;
 }
 </style>

@@ -1,8 +1,22 @@
 <template lang="html">
   <section class="Review">
-    <div style='position:absolute; top:90px; right:30px;'><b-button class="btn-fw btn-inverse-light" @click="exportToPDF"><i class="mdi mdi-download"></i>PDF</b-button></div>
+    <div style='position:absolute; top:90px; right:30px; z-index:1;'><b-button class="btn-fw btn-inverse-light" @click="exportToPDF"><i class="mdi mdi-download"></i>PDF</b-button></div>
     <div ref="pdfarea">
-      <h3>{{ lecture_name }} {{ date }}</h3>
+      <div class="row" style="height:100%; margin-top:40px;">
+        <div id="torilogo" style="width:100%; display:none; text-align:center; margin-bottom:20px;">
+          <img width="30%" height="100%" src="../../assets/images/tori-logo-blue.png">
+        </div>
+        <div class="col" style="height:100%;">
+          <div class="nanumgothic" style="width:40%; height:100%; float:left; font-family: 'Nanum Gothic', sans-serif;">
+            <h2>{{ lecture_name }} {{ date }}</h2>
+          </div>
+          <div style="width:60%; height:100%; float:right; margin-top:10px;">
+            <span v-for="(key, idx) in keyword" v-bind:key="idx" style="float:right;">
+              <b-button class="btn-fw btn-link btn-rounded">{{ key }}</b-button>&nbsp;&nbsp;&nbsp;
+            </span>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-12 grid-margin">
           <div class="card" v-for="(item, index) in orderItems" v-bind:key="item.start" style="margin-bottom:25px;">
@@ -10,16 +24,16 @@
               <div class="row">
                 <div class="col-md-12 grid-margin">
                   <div calss="col">
-                    <div class="col-md-4" style="float:left;">
+                    <div class="col-md-5" style="float:left;">
                       <img width='100%' height='100%' v-bind:src='item.imgURL'>
-                      <audio v-bind:id='index' controls="controls" src="[blobURL]" type="audio/mp3" style='width: 100%; margin-top:20px;' />
-                      <div v-bind:id='index + 1000' @click="playAudio(index, item.id, item.start, item.end)" style='position:absolute; bottom:22px; left:31px; z-index:1; display:block'>▶</div>
+                      <audio v-bind:id='index' controls="controls" src="[blobURL]" type="audio/mp3" name="playbar" style='width: 100%; margin-top:20px;' />
+                      <div v-bind:id='index + 1000' @click="playAudio(index, item.id, item.start, item.end)" name="loadbtn" style='position:absolute; bottom:22px; left:31px; z-index:1; display:block'>▶</div>
                     </div>
-                    <div class="col-md-8" style="float:right;">
-                      <div style='position:absolute; top:0px; right:10px;'><b-button class="btn-fw btn-inverse-light" @click="editSummary(index)"><i class="mdi mdi-border-color"></i>Edit</b-button></div>
+                    <div class="col-md-7" style="float:right;">
+                      <div style='position:absolute; top:0px; right:10px;'><b-button name="editSum" class="btn-fw btn-inverse-light" @click="editSummary(index)"><i class="mdi mdi-border-color"></i>Save</b-button></div>
                       <h4 class='card-title mb-0' id="Pscript">Summary</h4><br/>
                       <div id="summary" class="editable scroll type1" contenteditable="true" style='width:100%; border:none;'>
-                        <div class="bounce" v-if="item.summary[0] === 'NO SUMMARY'" style="text-align:center;">
+                        <div v-if="item.summary[0] === 'NO SUMMARY'" style="text-align:center;">
                           <img width='50%' height='100%' src='../../assets/images/kwantori.gif'>
                           <br/>요약을 생성 중이에요!
                         </div>
@@ -35,7 +49,7 @@
                   </div>
                 </div>
                 <div class="col-md-12">
-                  <div style='position:absolute; top:0px; right:10px;'><b-button class="btn-fw btn-inverse-light" @click="editScript(index)"><i class="mdi mdi-border-color"></i>Edit</b-button></div>
+                  <div style='position:absolute; top:0px; right:10px;'><b-button name="editScr" class="btn-fw btn-inverse-light" @click="editScript(index)"><i class="mdi mdi-border-color"></i>Save</b-button></div>
                   <h4 class='card-title mb-0' id="Pscript">Script</h4><br/>
                   <textarea v-model="item.script" id="script" name="script" class='scroll type1' style='height:180px; width:100%; border:none;'>
                   </textarea>
@@ -52,9 +66,7 @@
 <script lang="js">
 import html2pdf from 'html2pdf.js'
 import S3config from '../Key.js'
-import JQuery from 'jquery'
-
-let $ = JQuery
+import axios from 'axios'
 
 export default {
   name: 'Review',
@@ -63,19 +75,20 @@ export default {
       items: [
       ],
       request: false, // storage 한번만 요청
-      mp3Arr: null
+      mp3Arr: null,
+      global_id: {}
     }
   },
   props: {
     lecture_name: { type: String, default: '' },
-    date: { type: String, default: '' }
-  },
-  created () {
+    date: { type: String, default: '' },
+    keyword: { type: [String], default: '' }
   },
   computed: {
     orderItems: function () {
       if (this.request === false) {
         this.RequestItem()
+        console.log(this.items)
       }
       return this.items.slice().sort(function (a, b) {
         return a.start - b.start // start 기준으로 오름차순 정렬
@@ -84,35 +97,31 @@ export default {
   },
   methods: {
     RequestItem () {
-      JQuery.ajaxSettings.traditional = true
-      $.ajax({
-        type: 'GET',
-        url: 'http://localhost:3000/storage/note',
-        data: {
-          'lecture_name': encodeURI(String(this.lecture_name)),
-          'date': encodeURI(String(this.date))
-        },
-        dataType: 'json',
-        contentType: 'application/json; charset=euc-kr',
-        success: function (data) {
-          console.log(this.lecture_name)
-          console.log(this.date)
-          console.log(data)
-          for (var i = 0; i < data.length; i++) {
+      axios.get('http://localhost:3000/storage/note', {
+        params: {
+          lecture_name: this.lecture_name,
+          date: this.date
+        }
+      })
+        .then(function (data) {
+          for (var i = 0; i < data.data.length - 1; i++) {
+            console.log(data.data[i])
+            this.global_id = data.data[i].id
             this.items.push({
-              imgURL: data[i].imgURL,
-              id: data[i].id,
-              start: data[i].start,
-              end: data[i].end,
-              script: data[i].script,
-              summary: data[i].summary
+              imgURL: data.data[i].imgURL + ',' + data.data[i].image,
+              id: data.data[i].id,
+              start: data.data[i].start,
+              end: data.data[i].end,
+              script: data.data[i].script,
+              summary: data.data[i].summary
             })
           }
+          console.log(this.items.length)
           this.request = true
-        }.bind(this)
-      }).catch(error => {
-        console.log(error.message)
-      })
+        }.bind(this))
+        .catch(function (error) {
+          console.log(error)
+        })
     },
     setTimeoutPromise (ms) {
       return new Promise((resolve, reject) => {
@@ -120,14 +129,27 @@ export default {
       })
     },
     async exportToPDF () {
+      console.log('pdf 생성 시작')
       const textarea = document.getElementsByTagName('textarea')
       for (let i = 0; i < textarea.length; i++) {
         textarea[i].style.height = '1px'
         textarea[i].style.height = (2 * textarea[i].scrollHeight) + 'px' // textarea 높이 조절 (스크롤 없도록)
       }
+      const editSum = document.getElementsByName('editSum')
+      const editScr = document.getElementsByName('editScr')
+      const loadbtn = document.getElementsByName('loadbtn')
+      for (let i = 0; i < editSum.length; i++) {
+        editSum[i].style.display = 'none'
+        editScr[i].style.display = 'none'
+        loadbtn[i].style.display = 'none'
+      }
+
+      const logodiv = document.getElementById('torilogo')
+      logodiv.style.display = 'block'
+
       html2pdf(this.$refs.pdfarea, {
         margin: 0,
-        filename: 'document.pdf',
+        filename: this.lecture_name + '_' + this.date + '.pdf',
         image: {type: 'jpg', quality: 0.95},
         html2canvas: {
           useCORS: true, scrollY: 0, scale: 1, dpi: 300, letterRendering: true, allowTaint: false
@@ -139,6 +161,12 @@ export default {
       for (let i = 0; i < textarea.length; i++) {
         textarea[i].style.height = '180px'
       }
+      for (let i = 0; i < editSum.length; i++) {
+        editSum[i].style.display = 'block'
+        editScr[i].style.display = 'block'
+        loadbtn[i].style.display = 'block'
+      }
+      logodiv.style.display = 'none'
     },
     loadAudio (S3, params) {
       return new Promise((resolve, reject) => {
@@ -166,7 +194,6 @@ export default {
           secretAccessKey: S3config.secretAccessKey
         }
       })
-
       for (var i = Number(start); i <= Number(end); i++) {
         console.log(i)
         const params = {
@@ -212,6 +239,11 @@ textarea { resize: none; }
 }
 @keyframes bounce_frames {
   from {transform: translate3d(0, 0, 0);}
-  to {transform: translate3d(0, 50px, 0);}
+  to {transform: translate3d(0, -20px, 0);}
+}
+
+.nanumgothic * {
+ font-family: 'Nanum Gothic', sans-serif;
+ font-weight: 600;
 }
 </style>
