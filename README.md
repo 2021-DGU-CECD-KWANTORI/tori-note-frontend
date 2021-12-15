@@ -23,7 +23,7 @@
 
 ## Developers
 
-[김관우](https://github.com/Kim-kwan-woo), [김혜수](https://github.com/1998YUKI0331), [신성현](https://github.com/hy-eon), [이주원](https://github.com/leeez0128)
+[김관우](https://github.com/Kim-kwan-woo) • [김혜수](https://github.com/1998YUKI0331) • [신성현](https://github.com/hy-eon) • [이주원](https://github.com/leeez0128)
 
 ## Stack
 
