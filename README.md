@@ -8,7 +8,7 @@
   Vue.js X Node.js
 </h4>
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/62555935/146235966-cef830e8-d0b1-4936-9c4f-5bafa806710d.PNG" width="200"/>
+  <img src="https://user-images.githubusercontent.com/62555935/146235966-cef830e8-d0b1-4936-9c4f-5bafa806710d.PNG" width="600"/>
 </p>
 
 <p align="center">
@@ -52,15 +52,15 @@
 ### Study and Review Page
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/62555935/146236745-ff7cc65a-cabc-4636-b30f-79a575f7387f.png" width="150"/>
-  <img src="https://user-images.githubusercontent.com/62555935/146236853-f5dce205-1b5b-4573-a3b3-8b798ce4eba7.png" width="150"/>
-  <img src="https://user-images.githubusercontent.com/62555935/146236917-38980f63-c973-4325-b998-588af15191e5.png" width="150"/>
+  <img src="https://user-images.githubusercontent.com/62555935/146236745-ff7cc65a-cabc-4636-b30f-79a575f7387f.png" width="500"/>
+  <img src="https://user-images.githubusercontent.com/62555935/146236853-f5dce205-1b5b-4573-a3b3-8b798ce4eba7.png" width="500"/>
+  <img src="https://user-images.githubusercontent.com/62555935/146236917-38980f63-c973-4325-b998-588af15191e5.png" width="500"/>
 </p>
 
 ### Storage Page
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/62555935/146237290-289bcb6f-710c-4927-ab06-03bb00503ad3.gif" width="150"/>
+  <img src="https://user-images.githubusercontent.com/62555935/146237290-289bcb6f-710c-4927-ab06-03bb00503ad3.gif" width="500"/>
 </p>
 
 ## Demo
