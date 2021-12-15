@@ -8,7 +8,7 @@
   Vue.js X Node.js
 </h4>
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/62555935/146235966-cef830e8-d0b1-4936-9c4f-5bafa806710d.PNG" width="600"/>
+  <img src="https://user-images.githubusercontent.com/62555935/146235966-cef830e8-d0b1-4936-9c4f-5bafa806710d.PNG" width="500"/>
 </p>
 
 <p align="center">
